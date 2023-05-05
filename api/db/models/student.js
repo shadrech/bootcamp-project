@@ -96,7 +96,7 @@ export const studentModel = {
     )
 
     if (!result[0].affectedRows) {
-      throw new ApiError(`Record with studentId "${studentId}" and courseId "${courseId}" does not exist`, 404)
+      throw new ApiError(`Student "${studentId}" is not enrolled to course "${courseId}"`, 404)
     }
 
     return this.fetchOne(studentId)
