@@ -4,7 +4,10 @@ export const courseController = {
   post: (req, res, next) => {
     return courseModel.create(req.body)
       .then(course => res.json({ course }))
-      .catch(error => res.status(error?.statusCode ?? 500).json({ error: error.message }));
+      .catch(error => {
+        console.error(error)
+        res.status(error?.statusCode ?? 500).json({ error: error.message })
+      });
   },
 
   get: async (req, res, next) => {

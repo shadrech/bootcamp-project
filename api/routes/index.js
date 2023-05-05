@@ -16,12 +16,12 @@ router.route('/student/:id')
   .put(validator.body(studentSchemas.put), studentController.put)
 router.route('/student/:id/enroll')
   .post(validator.body(studentSchemas.postEnroll), studentController.enroll)
-  .put(validator.body(studentSchemas.putEnroll), studentController.enroll)
+  .put(validator.body(studentSchemas.putEnroll), studentController.putEnroll)
 
 router.route('/course')
   .get(validator.query(courseSchemas.get), courseController.get)
   .post(validator.body(courseSchemas.post), courseController.post)
 router.route('/course/:id')
-  .get(courseController.get)
+  .get(courseController.getOne)
 
   export default router;

@@ -5,12 +5,12 @@ import { transformJoinedEnrollmentRow } from '../../utils/mappers'
 
 export const courseModel = {
   async create(fields) {
-    const result = await connection.execute(
+    const id = uuid.v4()
+    const [result] = await connection.execute(
       'INSERT INTO course(id, title, description, imageUrl) VALUES(?, ?, ?, ?)',
-      [uuid.v4(), fields.title, fields.description, fields.imageUrl]
+      [id, fields.title, fields.description || null, fields.imageUrl || null]
     )
     
-    const id = result.insertId
     const [rows] = await connection.execute(`SELECT * FROM course WHERE id=?`, [id])
 
     return rows[0]
