@@ -36,7 +36,7 @@ export const studentModel = {
   async fetchOne(id) {
     const [rows] = await connection.execute(`
       SELECT
-        s.*, e.id AS e_id, e.score AS e_score, e.grade AS e_grade, e.courseId AS e_courseId, e.created_at AS e_created_at, c.title AS c_title
+        s.*, e.id AS e_id, e.score AS e_score, e.grade AS e_grade, e.courseId AS e_courseId, e.createdAt AS e_createdAt, c.title AS c_title
       FROM student AS s
       INNER JOIN enrollment AS e
       ON s.id = e.studentId
@@ -49,7 +49,7 @@ export const studentModel = {
       id: rows[0].id,
       name: rows[0].name,
       email: rows[0].email,
-      created_at: rows[0].created_at,
+      createdAt: rows[0].createdAt,
       enrollments: rows.map(transformJoinedEnrollmentRow)
     }
 
