@@ -1,10 +1,10 @@
-const studentModel = require("../db/models/student");
+import { studentModel } from "../db/models/student"
 
-module.exports = {
+export const studentController = {
   post: (req, res, next) => {
     studentModel.create(req.body)
       .then(student => res.json({ student }))
-      .catch(error => res.status(500).json(error));
+      .catch(error => res.status(error?.statusCode ?? 500).json({ error: error.message }));
   },
 
   get: async (req, res, next) => {
@@ -12,7 +12,7 @@ module.exports = {
       const students = await studentModel.fetch(req.query.name)
       return res.json({ students })
     } catch (error) {
-      res.status(500).json(err)
+      res.status(error?.statusCode ?? 500).json({ error: error.message })
     }
   },
 
@@ -21,7 +21,25 @@ module.exports = {
       const student = await studentModel.update(req.params.id, req.body)
       return res.json({ student })
     } catch (error) {
-      res.status(500).json(err)
+      res.status(error?.statusCode ?? 500).json({ error: error.message })
+    }
+  },
+
+  enroll: async (req, res, next) => {
+    try {
+      const student = await studentModel.addEnrollment(req.params.id, req.body.courseId)
+      return res.json({ student })
+    } catch (error) {
+      res.status(error?.statusCode ?? 500).json({ error: error.message })
+    }
+  },
+
+  putEnroll: async (req, res, next) => {
+    try {
+      const student = await studentModel.updateEnrollment(req.params.id, req.body.courseId, req.body.score, req.body.grade)
+      return res.json({ student })
+    } catch (error) {
+      res.status(error?.statusCode ?? 500).json({ error: error.message })
     }
   },
 }

@@ -1,14 +1,27 @@
-const router = require("express").Router();
-const validator = require('express-joi-validation').createValidator({})
+import express from 'express'
+import JoiValidation from 'express-joi-validation'
 
-const studentController = require("./student.controller");
-const studentSchemas = require("./student.schema");
+const validator = JoiValidation.createValidator({})
+const router = express.Router()
 
-router.route("/student")
+import { studentController } from './student.controller'
+import * as studentSchemas from './student.schema'
+import { courseController } from './course.controller'
+import * as courseSchemas from './course.schema'
+
+router.route('/student')
   .get(validator.query(studentSchemas.get), studentController.get)
   .post(validator.body(studentSchemas.post), studentController.post)
-
-router.route("/student/:id")
+router.route('/student/:id')
   .put(validator.body(studentSchemas.put), studentController.put)
+router.route('/student/:id/enroll')
+  .post(validator.body(studentSchemas.postEnroll), studentController.enroll)
+  .put(validator.body(studentSchemas.putEnroll), studentController.enroll)
 
-module.exports = router;
+router.route('/course')
+  .get(validator.query(courseSchemas.get), courseController.get)
+  .post(validator.body(courseSchemas.post), courseController.post)
+router.route('/course/:id')
+  .get(courseController.get)
+
+  export default router;
