@@ -50,7 +50,7 @@ body {
   text-decoration: none;
 }
 
-.user {
+.user, .course {
   position: relative;
   display: flex;
   margin: 10px;
@@ -61,13 +61,17 @@ body {
   display: inline-block;
 }
 
+.course .item {
+  display: block;
+}
+
 .user .info {
   padding-left: 10px;
   font-family: "resagokrregular";
   text-align: left;
 }
 
-.user .info .name {
+.user .info .name, .course .info .title {
   font-size: 1.4em;
   color: #161c24;
   margin-bottom: 0;
@@ -75,6 +79,11 @@ body {
 
 .user .info .email {
   font-size: 1em;
+  color: #393b3d;
+}
+
+.course .info .id {
+  font-size: 0.9em;
   color: #393b3d;
 }
 

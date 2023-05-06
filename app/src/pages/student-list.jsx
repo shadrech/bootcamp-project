@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Student } from "./student";
+import { Student } from "../components/student";
 import { studentApi } from '../api/students';
 
 export const StudentList = () => {

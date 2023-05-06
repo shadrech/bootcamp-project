@@ -4,8 +4,8 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 
-import { StudentList } from "./components/student-list";
-import { StudentCreateEdit } from "./components/student-create-edit";
+import { StudentList } from "./pages/student-list";
+import { StudentCreateEdit } from "./pages/student-create-edit";
 import './css/index.css';
 
 const router = createBrowserRouter([

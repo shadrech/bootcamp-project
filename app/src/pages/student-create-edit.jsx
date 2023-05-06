@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import { StudentForm } from "./student-form.jsx";
+import { StudentForm } from "../components/student-form.jsx";
 import { studentApi } from '../api/students.js';
 
 export function StudentCreateEdit() {
