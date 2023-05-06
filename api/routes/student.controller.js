@@ -16,10 +16,28 @@ export const studentController = {
     }
   },
 
+  getOne: async (req, res, next) => {
+    try {
+      const student = await studentModel.fetchOne(req.params.id)
+      return res.json({ student })
+    } catch (error) {
+      res.status(error?.statusCode ?? 500).json({ error: error.message })
+    }
+  },
+
   put: async (req, res, next) => {
     try {
       const student = await studentModel.update(req.params.id, req.body)
       return res.json({ student })
+    } catch (error) {
+      res.status(error?.statusCode ?? 500).json({ error: error.message })
+    }
+  },
+
+  delete: async (req, res, next) => {
+    try {
+      await studentModel.deleteOne(req.params.id)
+      return res.status(200).end()
     } catch (error) {
       res.status(error?.statusCode ?? 500).json({ error: error.message })
     }

@@ -1,6 +1,6 @@
 {
-  "short_name": "Admin App",
-  "name": "User Adminstrator App",
+  "short_name": "CodeMonya",
+  "name": "CodeMonya Bootcamp Project",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,8 +8,8 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": "./index.html",
+  "start_url": ".",
   "display": "standalone",
-  "theme_color": "#2E6DA4",
+  "theme_color": "#000000",
   "background_color": "#ffffff"
 }

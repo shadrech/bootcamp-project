@@ -36,11 +36,11 @@ export const studentModel = {
   async fetchOne(id) {
     const [rows] = await connection.execute(`
       SELECT
-        s.*, e.id AS e_id, e.score AS e_score, e.grade AS e_grade, e.courseId AS e_courseId, e.createdAt AS e_createdAt, c.title AS c_title
+        s.*, e.id AS e_id, e.score AS e_score, e.grade AS e_grade, e.createdAt AS e_createdAt, c.id AS c_id, c.title AS c_title, c.description AS c_description, c.imageUrl AS c_imageUrl
       FROM student AS s
-      INNER JOIN enrollment AS e
+      LEFT OUTER JOIN enrollment AS e
       ON s.id = e.studentId
-      INNER JOIN course AS c
+      LEFT OUTER JOIN course AS c
       ON c.id = e.courseId
       WHERE s.id=?
     `, [id])
@@ -87,6 +87,10 @@ export const studentModel = {
     )
 
     return this.fetchOne(studentId)
+  },
+
+  async deleteOne(studentId) {
+    await connection.execute('DELETE FROM student WHERE id=?', [studentId])
   },
 
   async updateEnrollment(studentId, courseId, score, grade) {

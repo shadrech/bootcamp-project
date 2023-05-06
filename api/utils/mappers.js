@@ -2,7 +2,11 @@ export const transformJoinedEnrollmentRow = (row) => ({
   id: row.e_id,
   score: row.e_score,
   grade: row.e_grade,
-  courseId: row.e_courseId,
-  courseTitle: row.c_title,
-  createdAt: row.e_createdAt
+  createdAt: row.e_createdAt,
+  course: {
+    id: row.c_id,
+    title: row.c_title,
+    description: row.c_description,
+    imageUrl: row.c_imageUrl,
+  }
 })
