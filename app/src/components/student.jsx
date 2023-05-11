@@ -1,23 +1,29 @@
 import React from "react";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { studentApi } from '../api/students';
 
 export const Student = (props) => {
-  const { student } = props
+  const { student, deleteStudent } = props
   const rand = Math.random();
 
   const deleteUser = () => {
     confirmAlert({
       title: "Confirm delete",
       message: `Are you sure you want to delete ${student.name}?`,
-      confirmLabel: "Yes",
-      cancelLabel: "No",
-      onConfirm: async () => {
-        await studentApi.delete(student.id)
-        redirect('/')
-      },
-      onCancel: () => console.log("SPARE 'EM'!")
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: async () => {
+            await studentApi.delete(student.id)
+            deleteStudent(student.id)
+          }
+        },
+        {
+          label: 'No',
+          onClick: () => console.log("SPARE 'EM'!")
+        }
+      ],
     });
   }
   

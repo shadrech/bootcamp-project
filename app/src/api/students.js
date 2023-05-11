@@ -1,8 +1,6 @@
 class StudentApi {
   async fetchAll() {
-    const data = await fetch(`${process.env.REACT_APP_API_URL}/student`, {
-      method: 'GET'
-    })
+    const data = await fetch(`${process.env.REACT_APP_API_URL}/student`)
     return data.json()
   }
 
@@ -13,6 +11,9 @@ class StudentApi {
 
   async create(name, email) {
     const data = await fetch(`${process.env.REACT_APP_API_URL}/student`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
       method: 'POST',
       body: JSON.stringify({ name, email })
     })
@@ -53,13 +54,10 @@ class StudentApi {
   }
 
   async delete(studentId) {
-    const data = await fetch(`${process.env.REACT_APP_API_URL}/student/${studentId}`, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
+    await fetch(`${process.env.REACT_APP_API_URL}/student/${studentId}`, {
       method: 'DELETE'
     })
-    return data.json()
+    return true
   }
 }
 

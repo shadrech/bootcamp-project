@@ -1,5 +1,11 @@
 @import url(./fonts/fonts.css);
 
+:root {
+  --app-dark-blue: #154368;
+  --app-blue: #2E6DA4;
+  --app-grey: #2a2a2a;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -13,10 +19,22 @@ body {
   text-align: center;
 }
 
-.App .header {
+.App nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.App nav .header {
   font-family: "resagokrregular" !important;
-  color: #154368;
+  color: var(--app-dark-blue);
   font-size: 2em;
+}
+
+.App nav a {
+  margin-left: 1rem;
+  color: var(--app-dark-blue);
+  font-size: 1rem;
 }
 
 .App .app-wrapper {
@@ -27,7 +45,7 @@ body {
 .App .app-wrapper h3 {
   font-family: "resagokrregular";
   text-align: left;
-  color: #2E6DA4;
+  color: var(--app-blue);
   margin-bottom: 0.5em;
 }
 
@@ -35,26 +53,46 @@ body {
   margin-top: 0;
 }
 
+.App .app-wrapper h1 {
+  color: var(--app-blue)
+}
+
+.App .app-wrapper h4 {
+  color: var(--app-grey)
+}
+
 .App .app-wrapper .add-btn {
-  position: absolute;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2em;
-  background: #2E6DA4;
+  font-size: 1.5em;
+  background: var(--app-blue);
   color: white;
-  height: 50px;
-  width: 50px;
-  right: 0;
-  top: -60px;
+  height: 2rem;
+  width: 12rem;
+  left: calc(100% - 12.5rem);
   text-decoration: none;
+}
+
+.App .app-wrapper .add-btn:hover {
+  background: #3a7db7;
+}
+
+.App .app-wrapper .add-btn span {
+  font-size: .75em;
+  margin-left: 0.5rem;
 }
 
 .user, .course {
   position: relative;
   display: flex;
-  margin: 10px;
+  margin: 0.5rem;
   background: white;
+}
+
+.course {
+  flex-direction: column; 
 }
 
 .user .item {
@@ -63,6 +101,14 @@ body {
 
 .course .item {
   display: block;
+}
+
+.course .item.image {
+  height: 6rem;
+  width: 100%;
+  display: block;
+  background-position: center;
+  background-size: cover;
 }
 
 .user .info {
@@ -82,7 +128,7 @@ body {
   color: #393b3d;
 }
 
-.course .info .id {
+.course .info .description {
   font-size: 0.9em;
   color: #393b3d;
 }
@@ -115,11 +161,11 @@ body {
   background: #7c6662;
 }
 
-.user-form {
+.custom-form {
   position: relative;
 }
 
-.user-form input {
+.custom-form input {
   height: 40px;
   display: block;
   width: 100%;
@@ -130,7 +176,17 @@ body {
   padding-left: 10px;
 }
 
-.user-form .form-submit button {
+.custom-form textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  font-family: "resagokrregular";
+  font-size: 1em;
+  padding-left: 10px;
+}
+
+.custom-form .form-submit button {
   height: 40px;
   border: none;
   padding: 0 2em 0 2em;

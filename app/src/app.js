@@ -4,13 +4,20 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 
+import './css/index.css';
 import { StudentList } from "./pages/student-list";
 import { StudentCreateEdit } from "./pages/student-create-edit";
-import './css/index.css';
+import { CourseList } from './pages/course-list';
+import { CourseCreate } from './pages/course-create';
+import { Home } from './pages/home';
 
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <Home />
+  },
+  {
+    path: '/students',
     element: <StudentList />
   }, {
     path: '/students/create',
@@ -18,18 +25,17 @@ const router = createBrowserRouter([
   }, {
     path: '/students/edit/:id',
     element: <StudentCreateEdit />
-  }
+  },
+  {
+    path: '/courses',
+    element: <CourseList />
+  },
+  {
+    path: '/courses/create',
+    element: <CourseCreate />
+  },
 ])
 
-class App extends React.Component {
-  render() {
-    return (
-      <div className="App">
-        <h2 className="header">CodeMonya Bootcamp</h2>
-        <RouterProvider router={router} />
-      </div>
-    );
-  }
-}
+const App = () => <RouterProvider router={router} />;
 
 export default App;

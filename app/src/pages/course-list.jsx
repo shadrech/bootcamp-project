@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Student } from "../components/student";
 import { courseApi } from '../api/course';
+import { Course } from '../components/course';
+import { AppWrapper } from '../components/app-wrapper';
 
 export const CourseList = () => {
   const [courses, setCourses] = React.useState([])
@@ -12,13 +13,13 @@ export const CourseList = () => {
   }
 
   React.useEffect(() => {
-    fetchStudents()
+    fetchCourses()
   }, [])
 
   return (
-    <div className="app-wrapper">
-      <Link to="/courses/create" className="add-btn"><i className="fa fa-plus" aria-hidden="true"></i></Link>
-      {courses.map(student => <Student key={student.id} student={student} />)}
-    </div>
+    <AppWrapper>
+      <Link to="/courses/create" className="add-btn"><i className="fa fa-plus" aria-hidden="true"></i><span>New Course</span></Link>
+      {courses.map(course => <Course key={course.id} course={course} />)}
+    </AppWrapper>
   );
 }

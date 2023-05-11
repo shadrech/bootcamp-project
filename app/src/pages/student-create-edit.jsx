@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { StudentForm } from "../components/student-form.jsx";
 import { studentApi } from '../api/students.js';
+import { AppWrapper } from '../components/app-wrapper.jsx';
 
 export function StudentCreateEdit() {
   const params = useParams()
@@ -20,10 +21,10 @@ export function StudentCreateEdit() {
   }, [])
 
   return (
-    <div className="app-wrapper">
+    <AppWrapper>
       {student ? <h3>Edit {student.name}'s profile</h3> : <h3>Create New Student</h3>}
       <hr />
       <StudentForm student={student} />
-    </div>
+    </AppWrapper>
   )
 }

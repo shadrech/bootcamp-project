@@ -9,26 +9,17 @@ export const StudentForm = ({ student }) => {
     email: ''
   })
 
-  const handleUpdate = async () => {
-    await studentApi.update(student.id, state)
-    return navigate('/')
-  }
-
-  const handleCreate = async () => {
-    await studentApi.create(state.name, state.email)
-    return navigate('/')
-  }
-
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     if (student) {
-      handleUpdate()
+      await studentApi.update(student.id, state)
     } else {
-      handleCreate()
+      await studentApi.create(state.name, state.email)
     }
+    return navigate('/students')
   }
 
   const handleCancel = () => {
-    return navigate('/')
+    return navigate('/students')
   }
 
   const handleInputChange = (evt, key) => {
@@ -48,7 +39,7 @@ export const StudentForm = ({ student }) => {
   }, [student])
 
   return (
-    <div className="user-form">
+    <div className="custom-form">
       <input type="text" name="name" value={state.name} placeholder="Name" onChange={evt => handleInputChange(evt, "name")} />
       <input type="text" name="email" value={state.email} placeholder="Email" onChange={evt => handleInputChange(evt, "email")} />
       <div className="form-submit">
