@@ -9,7 +9,9 @@ export const StudentForm = ({ student }) => {
     email: ''
   })
 
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (event) => {
+    event.preventDefault()
+
     if (student) {
       await studentApi.update(student.id, state)
     } else {

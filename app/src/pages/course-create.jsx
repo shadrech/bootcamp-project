@@ -7,7 +7,7 @@ export function CourseCreate() {
     <>
       <Nav />
       <div className="app-wrapper">
-        <h3>Create New Course</h3>
+        <h3 className="page-title">Create New Course</h3>
         <hr />
         <CourseForm />
       </div>

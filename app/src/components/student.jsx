@@ -29,7 +29,7 @@ export const Student = (props) => {
   
   return (
     <div className="student">
-      <img className="item" alt="Random Profile" src={`https://randomuser.me/api/portraits/${rand > 0.5 ? "women" : "men"}/${Math.floor(rand * 100)}.jpg`} />
+      <img alt="Random Profile" src={`https://randomuser.me/api/portraits/${rand > 0.5 ? "women" : "men"}/${Math.floor(rand * 100)}.jpg`} />
       <div className="item info">
         <p className="name">{student.name}</p>
         <p className="email">{student.email}</p>

@@ -20,8 +20,10 @@ export const CourseList = () => {
     <>
       <Nav />
       <div className="app-wrapper">
-        <Link to="/courses/create" className="add-btn"><i className="fa fa-plus" aria-hidden="true"></i><span>New Course</span></Link>
-        {courses.map((course) => <Course key={course.id} course={course} />)}
+        <div className="list-wrapper">
+          <Link to="/courses/create" className="add-btn"><i className="fa fa-plus" aria-hidden="true"></i><span>New Course</span></Link>
+          {courses.map((course) => <Course key={course.id} course={course} />)}
+        </div>
       </div>
     </>
   );

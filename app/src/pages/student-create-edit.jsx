@@ -24,7 +24,9 @@ export function StudentCreateEdit() {
     <>
       <Nav />
       <div className="app-wrapper">
-        {student ? <h3>Edit {student.name}'s profile</h3> : <h3>Create New Student</h3>}
+        <h3 className="page-title">
+          {student ? `Edit ${student.name}'s profile` : 'Create New Student'}
+        </h3>
         <hr />
         <StudentForm student={student} />
       </div>

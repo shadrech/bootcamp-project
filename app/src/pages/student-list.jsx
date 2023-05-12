@@ -28,14 +28,20 @@ export const StudentList = () => {
     <>
       <Nav />
       <div className="app-wrapper">
-        <Link to="/students/create" className="add-btn"><i className="fa fa-plus" aria-hidden="true"></i><span>New Student</span></Link>
-        {students.map(student => (
-          <Student
-            key={student.id}
-            student={student}
-            deleteStudent={deleteStudent}
-          />
-        ))}
+        <section className="list-wrapper">
+          <Link to="/students/create" className="add-btn"><i className="fa fa-plus" aria-hidden="true"></i><span>New Student</span></Link>
+          <div className="students">
+            <div className="students-grid">
+              {students.map(student => (
+                <Student
+                  key={student.id}
+                  student={student}
+                  deleteStudent={deleteStudent}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );
