@@ -1,13 +1,16 @@
 import React from "react";
 import { CourseForm } from "../components/course-form.jsx";
-import { AppWrapper } from '../components/app-wrapper.jsx';
+import { Nav } from '../components/nav.jsx';
 
 export function CourseCreate() {
   return (
-    <AppWrapper>
-      <h3>Create New Course</h3>
-      <hr />
-      <CourseForm />
-    </AppWrapper>
+    <>
+      <Nav />
+      <div className="app-wrapper">
+        <h3>Create New Course</h3>
+        <hr />
+        <CourseForm />
+      </div>
+    </>
   )
 }

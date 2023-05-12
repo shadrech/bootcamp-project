@@ -28,15 +28,15 @@ export const Student = (props) => {
   }
   
   return (
-    <div className="user">
+    <div className="student">
       <img className="item" alt="Random Profile" src={`https://randomuser.me/api/portraits/${rand > 0.5 ? "women" : "men"}/${Math.floor(rand * 100)}.jpg`} />
       <div className="item info">
         <p className="name">{student.name}</p>
         <p className="email">{student.email}</p>
       </div>
-      <div className="item user-buttons">
-        <Link className="user-btn edit" to={`/students/edit/${student.id}`}><i className="fa fa-pencil" aria-hidden="true"></i></Link>
-        <div className="user-btn delete" onClick={deleteUser}><i className="fa fa-trash" aria-hidden="true"></i></div>
+      <div className="item student-buttons">
+        <Link className="student-btn edit" to={`/students/edit/${student.id}`}><i className="fa fa-pencil" aria-hidden="true"></i></Link>
+        <div className="student-btn delete" onClick={deleteUser}><i className="fa fa-trash" aria-hidden="true"></i></div>
       </div>
     </div>
   );

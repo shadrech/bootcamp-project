@@ -5,7 +5,13 @@ export const Course = (props) => {
   
   return (
     <div className="course">
-      <div className="item image" alt="Random Profile" style={{ backgroundImage: `url(${course.imageUrl})` }} />
+      <div
+        className="item image"
+        alt="Random Profile"
+        style={{
+          '--url': `url(${course.imageUrl})`
+        }}
+      />
       <div className="item info">
         <h2 className="title">{course.title}</h2>
         <p className="description">{course.description}</p>

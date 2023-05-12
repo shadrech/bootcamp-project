@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { courseApi } from '../api/course';
 import { Course } from '../components/course';
-import { AppWrapper } from '../components/app-wrapper';
+import { Nav } from '../components/nav';
 
 export const CourseList = () => {
   const [courses, setCourses] = React.useState([])
@@ -17,9 +17,12 @@ export const CourseList = () => {
   }, [])
 
   return (
-    <AppWrapper>
-      <Link to="/courses/create" className="add-btn"><i className="fa fa-plus" aria-hidden="true"></i><span>New Course</span></Link>
-      {courses.map(course => <Course key={course.id} course={course} />)}
-    </AppWrapper>
+    <>
+      <Nav />
+      <div className="app-wrapper">
+        <Link to="/courses/create" className="add-btn"><i className="fa fa-plus" aria-hidden="true"></i><span>New Course</span></Link>
+        {courses.map((course) => <Course key={course.id} course={course} />)}
+      </div>
+    </>
   );
 }

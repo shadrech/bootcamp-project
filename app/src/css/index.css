@@ -3,65 +3,129 @@
 :root {
   --app-dark-blue: #154368;
   --app-blue: #2E6DA4;
-  --app-grey: #2a2a2a;
+  --app-light-blue: #bfd9ff;
+  --app-grey: #353535;
+  --app-light-grey: #848484;
+  --app-dark-grey: #15171a;
 }
 
 body {
+  width: 100%;
   margin: 0;
   padding: 0;
   background: #e4ebee;
+  font-family: neoteric;
 }
 
-.App {
+nav {
+  position: fixed;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: darkslategray;
+  z-index: 1000;
+  width: 100%;
+  top: 0;
+}
+
+nav .header {
+  width: 15rem;
+  margin-right: 3rem;
+}
+
+nav a {
+  margin-left: 1rem;
+  color: white;
+  font-size: 1rem;
+  font-family: neoteric;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+
+.app-wrapper {
+  position: relative;
+  width: 50%;
+  position: relative;
   width: 50%;
   margin-left: 25%;
-  margin-top: 50px;
-  text-align: center;
+  margin-bottom: 3rem;
 }
 
-.App nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.App nav .header {
-  font-family: "resagokrregular" !important;
-  color: var(--app-dark-blue);
-  font-size: 2em;
-}
-
-.App nav a {
-  margin-left: 1rem;
-  color: var(--app-dark-blue);
-  font-size: 1rem;
-}
-
-.App .app-wrapper {
+.home {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
+  height: 50vh;
+  min-height: 600px;
+  background: darkslategray;
 }
 
-.App .app-wrapper h3 {
+.home img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+}
+
+.home .text {
+  position: relative;
+  width: 40%;
+  padding: 0 5rem;
+  font-family: neoteric;
+}
+
+.home h1 {
+  color: var(--app-light-blue)
+}
+
+.home h4 {
+  color: white;
+}
+
+.app-wrapper .bottom {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+  margin-top: -2rem;
+  z-index: 100;
+  background: white;
+}
+
+.app-wrapper .course-view-btn {
+  width: 50%;
+  border: var(--app-light-grey) 1px solid;
+  text-align: center;
+  padding: 0.5rem 0;
+  font-size: 1.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--app-grey);
+}
+
+.app-wrapper .course-view-btn:hover {
+  color: var(--app-dark-grey);
+}
+
+.app-wrapper h3 {
   font-family: "resagokrregular";
   text-align: left;
   color: var(--app-blue);
   margin-bottom: 0.5em;
 }
 
-.App .app-wrapper hr {
+.app-wrapper hr {
   margin-top: 0;
 }
 
-.App .app-wrapper h1 {
-  color: var(--app-blue)
-}
-
-.App .app-wrapper h4 {
-  color: var(--app-grey)
-}
-
-.App .app-wrapper .add-btn {
+.app-wrapper .add-btn {
   position: relative;
   display: flex;
   align-items: center;
@@ -75,27 +139,37 @@ body {
   text-decoration: none;
 }
 
-.App .app-wrapper .add-btn:hover {
+.app-wrapper .add-btn:hover {
   background: #3a7db7;
 }
 
-.App .app-wrapper .add-btn span {
+.app-wrapper .add-btn span {
   font-size: .75em;
   margin-left: 0.5rem;
 }
 
-.user, .course {
+.student, .course {
   position: relative;
   display: flex;
   margin: 0.5rem;
   background: white;
 }
 
-.course {
-  flex-direction: column; 
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.user .item {
+.course {
+  border-radius: 0.5rem;
+  flex-direction: column;
+  background: var(--app-dark-grey);
+  padding: 0.5rem;
+  opacity: 0;
+  animation: fade-in 1s ease-in forwards;
+}
+
+.student .item {
   display: inline-block;
 }
 
@@ -107,39 +181,48 @@ body {
   height: 6rem;
   width: 100%;
   display: block;
+  background: var(--url);
   background-position: center;
   background-size: cover;
 }
 
-.user .info {
+.student .info {
   padding-left: 10px;
   font-family: "resagokrregular";
   text-align: left;
 }
 
-.user .info .name, .course .info .title {
+.course .info {
+  padding: 0 1rem;
+}
+
+.student .info .name, .course .info .title {
   font-size: 1.4em;
   color: #161c24;
   margin-bottom: 0;
 }
 
-.user .info .email {
+.course .info .title {
+  color: var(--app-light-blue);
+}
+
+.student .info .email {
   font-size: 1em;
   color: #393b3d;
 }
 
 .course .info .description {
   font-size: 0.9em;
-  color: #393b3d;
+  color: white;
 }
 
-.user .user-buttons {
+.student .student-buttons {
   position: absolute;
   right: 0;
   bottom: 0;
 }
 
-.user .user-buttons .user-btn {
+.student .student-buttons .student-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -149,15 +232,15 @@ body {
   margin-left: 5px;
 }
 
-.user .user-buttons .user-btn:hover {
+.student .student-buttons .student-btn:hover {
   cursor: pointer;
 }
 
-.user .user-buttons .user-btn.edit {
+.student .student-buttons .student-btn.edit {
   background: #546455;
 }
 
-.user .user-buttons .user-btn.delete {
+.student .student-buttons .student-btn.delete {
   background: #7c6662;
 }
 
