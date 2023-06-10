@@ -17,4 +17,9 @@ app.post('/students', (request, response) => {
   response.json(result)
 })
 
+app.put('/students/:id', (request, response) => {
+  const result = studentModel.updateStudent(Number(request.params.id), request.body)
+  response.json(result)
+})
+
 app.listen(3000, () => console.log('Server running on port 3000'))

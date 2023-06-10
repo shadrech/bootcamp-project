@@ -1,5 +1,7 @@
 let incrementor = 0
-const students = []
+let students = [
+
+]
 
 const getStudents = () => {
   return {
@@ -21,7 +23,29 @@ const createStudent = (student) => {
   return { students }
 }
 
+const updateStudent = (id, params) => {
+  const index = students.findIndex((student) => student.id === id)
+  // const newStudent = {
+  //   id: students[index].id,
+  //   name: students[index].name,
+  //   name: params.name
+  // }
+  const newStudent = {
+    ...students[index],
+    name: params.name
+  }
+
+  students = [
+    ...students.slice(0, index),
+    newStudent,
+    ...students.slice(index + 1)
+  ]
+
+  return { student: newStudent }
+}
+
 module.exports = {
   getStudents,
-  createStudent
+  createStudent,
+  updateStudent
 }
