@@ -44,8 +44,20 @@ const updateStudent = (id, params) => {
   return { student: newStudent }
 }
 
+const deleteStudent = (id) => {
+  const index = students.findIndex((student) => student.id === id)
+
+  students = [
+    ...students.slice(0, index),
+    ...students.slice(index + 1)
+  ]
+
+  return { students }
+}
+
 module.exports = {
   getStudents,
   createStudent,
-  updateStudent
+  updateStudent,
+  deleteStudent
 }
