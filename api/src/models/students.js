@@ -1,27 +1,26 @@
 const students = [
     {
       id: 1,
-
       name: 'Mthabisi Nyathi',
-      age: 15,
-      email: 'mtha@gmail.com',
+      age: 32,
+      email: 'm@g.com'
     },
     {
-      id: 3,
+      id: 2,
       name: 'Mtha Nyathi',
-      age: 15,
-      email: 'mtha@gmail.com',
+      age: 32,
+      email: 'm@g.com'
     },
   ];
   
   let incrementor = 2;
-  //query students
+  
   const getStudents = () => {
     return {
       students,
     };
   };
-//add new student & autou iincrement id
+  
   const postStudents = (newStudent) => {
     const student = {
       id: incrementor,
@@ -37,7 +36,6 @@ const students = [
     return students; 
   };
 
-  //find id and change name
   const putStudents = (id, newStudent) => {
   const studentIndex = students.findIndex(student => student.id === id);
 
@@ -48,7 +46,6 @@ const students = [
   return students;
 };
 
-//delete student
 const deleteStudents = (id) => {
   const studentIndex = students.findIndex(student => student.id === id);
 
