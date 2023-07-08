@@ -1,7 +1,4 @@
-let incrementor = 0
-let students = [
-
-]
+const { studentDbModel } = require('../db/models/students')
 
 const getStudents = () => {
   return {
@@ -9,18 +6,11 @@ const getStudents = () => {
   }
 }
 
-const createStudent = (student) => {
-  const newStudent = {
-    id: incrementor,
-    name: student.name
-  }
+const createStudent = async (params) => {
+  const insertId = await studentDbModel.create(params)
+  const student = await studentDbModel.fetchById(insertId)
 
-  students.push(newStudent)
-
-  // incrementor = incrementor + 1
-  incrementor++
-
-  return { students }
+  return { student }
 }
 
 const updateStudent = (id, params) => {

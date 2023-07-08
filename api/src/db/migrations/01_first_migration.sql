@@ -1,0 +1,28 @@
+CREATE TABLE student (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  INDEX IDX_student_name (name)
+);
+
+CREATE TABLE course (
+  id VARCHAR(36) NOT NULL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT NULL,
+  imageUrl VARCHAR(255) NULL,
+  createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE enrollment (
+  studentId INT NOT NULL,
+  courseId VARCHAR(36) NOT NULL,
+  score INT NULL,
+  grade ENUM ('A', 'B', 'C', 'D', 'E', 'F') NULL,
+  startDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+  endDate DATETIME NULL
+);
+
+ALTER TABLE enrollment ADD CONSTRAINT FK_enrollment_studentId FOREIGN KEY (studentId) REFERENCES student(id) ON DELETE CASCADE;
+ALTER TABLE enrollment ADD CONSTRAINT FK_enrollment_courseId FOREIGN KEY (courseId) REFERENCES course(id) ON DELETE CASCADE;
