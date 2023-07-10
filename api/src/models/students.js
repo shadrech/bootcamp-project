@@ -1,6 +1,4 @@
-let incrementor = 0
-
-let students = []
+const { studentDbModel } = require('../db/models/students')
 
 const getStudents = () => {
     return {
@@ -8,17 +6,11 @@ const getStudents = () => {
     }
 }
 
-const createStudents = ( student ) => {
-    const newStudent = {
-        id: incrementor,
-        name: student.name
-    }
+const createStudent = async ( params ) => {
+    const insertId = await studentDbModel.create(params)
+    const student = await studentDbModel.fetchById(insertId)
 
-    students.push(newStudent)
-
-    incrementor++
-
-    return { students }
+    return { student }
 }
 
 const updateStudent = (id, params) => {
@@ -26,7 +18,9 @@ const updateStudent = (id, params) => {
 
     const newStudent = {
         ...students[index],
-        name: params.name
+        name: params.name,
+        email: params.email,
+        age: parseInt(params.age),
     } 
 
     students = [
@@ -35,28 +29,19 @@ const updateStudent = (id, params) => {
         ...students.slice(index + 1)
     ]
 
-    return { student: newStudent }
+    return { newstudent: newStudent }
 }
 
-const deleteStudent = (id, params) => {
+const deleteStudent = (id) => {
     const index = students.findIndex((student) => student.id === id)
-
-    //delete students[index]
-
-    const deleteStudent = {
-        ...delete students[index]
-    }
 
     students = [
         ...students.slice(0, index),
-        deleteStudent,
         ...students.slice(index + 1)
     ]
 
-    students = students.filter(value => Object.keys(value).length !== 0)
-
-    return console.log("Succesfully Deleted User!")
+    return { students }
     
 }
 
-module.exports = { getStudents, createStudents, updateStudent, deleteStudent }
+module.exports = { getStudents, createStudent, updateStudent, deleteStudent }
