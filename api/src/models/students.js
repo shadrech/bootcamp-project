@@ -1,65 +1,53 @@
-const students = [
-    {
-      id: 1,
-      name: 'Mthabisi Nyathi',
-      age: 32,
-      email: 'm@g.com'
-    },
-    {
-      id: 2,
-      name: 'Mtha Nyathi',
-      age: 32,
-      email: 'm@g.com'
-    },
-  ];
-  
-  let incrementor = 2;
-  
-  const getStudents = () => {
-    return {
-      students,
-    };
-  };
-  
-  const postStudents = (newStudent) => {
-    const student = {
-      id: incrementor,
-      name: newStudent.name,
-      age: newStudent.age,
-      email: newStudent.email
-    };
-  
-    students.push(student);
-  
-    incrementor++;
-  
-    return students; 
-  };
+const { studentDbModel } = require('../db/models/students')
 
-  const putStudents = (id, newStudent) => {
-  const studentIndex = students.findIndex(student => student.id === id);
+const getStudents = () => {
+  return {
+    students
+  }
+}
 
-  if (studentIndex !== -1) {
-    students[studentIndex].name = newStudent.name;
+const createStudent = async (params) => {
+  const insertId = await studentDbModel.create(params)
+  const student = await studentDbModel.fetchById(insertId)
+
+  return { student }
+}
+
+const updateStudent = (id, params) => {
+  const index = students.findIndex((student) => student.id === id)
+  // const newStudent = {
+  //   id: students[index].id,
+  //   name: students[index].name,
+  //   name: params.name
+  // }
+  const newStudent = {
+    ...students[index],
+    name: params.name
   }
 
-  return students;
-};
+  students = [
+    ...students.slice(0, index),
+    newStudent,
+    ...students.slice(index + 1)
+  ]
 
-const deleteStudents = (id) => {
-  const studentIndex = students.findIndex(student => student.id === id);
+  return { student: newStudent }
+}
 
-  if (studentIndex !== -1) {
-    students.splice(studentIndex, 1);
-  }
+const deleteStudent = (id) => {
+  const index = students.findIndex((student) => student.id === id)
 
-  return students;
-};
+  students = [
+    ...students.slice(0, index),
+    ...students.slice(index + 1)
+  ]
 
-  module.exports = {
-    getStudents,
-    putStudents,
-    postStudents,
-    deleteStudents,
-  };
-  
+  return { students }
+}
+
+module.exports = {
+  getStudents,
+  createStudent,
+  updateStudent,
+  deleteStudent
+}

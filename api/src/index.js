@@ -1,49 +1,42 @@
-const express = require('express');
-const studentModel = require('./models/students');
-const bodyParser = require('body-parser');
-const validator = require('express-joi-validation').createValidator({});
-const Joi = require('joi');
+const express = require('express')
+const validator = require('express-joi-validation').createValidator({})
+const bodyParser = require('body-parser')
+const Joi = require('joi')
+const { createConnection } = require('./db/connection')
 
-const Mthaapp = express();
+const studentModel = require('./models/student')
+const app = express()
 
-Mthaapp.use(bodyParser.json());
+async function start() {
+  await createConnection()
+  const postStudentBodySchema = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+  })
 
-const studentSchema = Joi.object({
-  name: Joi.string().required(),
-  age: Joi.number().integer().required(),
-  email: Joi.string().email().required()
-});
+  app.use(bodyParser.json())
 
-Mthaapp.get('/student', (req, res) => {
-  const result = studentModel.getStudents();
-  res.json(result);
-});
+  app.get('/students', (request, response) => {
+    const data = studentModel.getStudents()
+    response.json(data);
+  })
 
-// Mthaapp.put('/student', (req, res) => {
-//   const updatedStudents = studentModel.putStudents(req.body);
-//   res.json(updatedStudents); 
-// });
+  app.post('/students', validator.body(postStudentBodySchema), async (request, response) => {
+    const result = await studentModel.createStudent(request.body)
+    response.json(result)
+  })
 
-Mthaapp.post('/student', validator.body(studentSchema), (req, res) => {
-  const createdStudents = studentModel.postStudents(req.body);
-  res.json(createdStudents); 
-});
+  app.put('/students/:id', (request, response) => {
+    const result = studentModel.updateStudent(Number(request.params.id), request.body)
+    response.json(result)
+  })
 
-Mthaapp.put('/student/:id', (req, res) => {
-  const { id } = req.params;
-  const result = studentModel.putStudents(Number(id), req.body);
-  res.json(result);
-});
+  app.delete('/students/:id', (request, response) => {
+    const result = studentModel.deleteStudent(Number(request.params.id))
+    response.json(result)
+  })
 
-Mthaapp.delete('/student/:id', (req, res) => {
-  const { id } = req.params;
-  const result = studentModel.deleteStudents(Number(id), req.body);
-  res.json(result);
-});
+  app.listen(3000, () => console.log('Server running on port 3000'))
+}
 
-
-const port = 3000;
-
-Mthaapp.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+start()
