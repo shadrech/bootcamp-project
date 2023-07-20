@@ -1,0 +1,20 @@
+# Use root/example as user/password credentials
+version: '3.8'
+
+services:
+
+  db:
+    image: mysql:8.0.33
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports: 
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: password
+      MYSQL_USER: user
+      MYSQL_DATABASE: admin
+    volumes:
+      - ./src/db/migrations:/migrations
+
+ # mysql --host=localhost --user=user --database=admin --password=password
