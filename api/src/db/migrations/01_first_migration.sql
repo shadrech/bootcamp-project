@@ -16,6 +16,7 @@ CREATE TABLE course (
 );
 
 CREATE TABLE enrollment (
+  id VARCHAR(36) NOT NULL PRIMARY KEY,
   studentId INT NOT NULL,
   courseId VARCHAR(36) NOT NULL,
   score INT NULL,
