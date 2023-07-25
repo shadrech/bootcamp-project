@@ -11,3 +11,5 @@ services:
       MYSQL_PASSWORD: password
       MYSQL_USER: user
       MYSQL_DATABASE: admin
+    volumes:
+      - ./src/db/migrations:/migrations

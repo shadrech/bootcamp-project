@@ -1,40 +1,42 @@
 const express = require('express')
 const validator = require('express-joi-validation').createValidator({})
 const bodyParser = require('body-parser')
-const Joi = require('joi')
+
 const { createConnection } = require('./db/connection')
 
-const studentModel = require('./models/student')
+const { studentController } = require('./controllers/student')
+const { postStudentBodySchema, putStudentBodySchema } = require('./controllers/student/validators')
+const { courseController } = require('./controllers/course')
+const { postCourseBodySchema } = require('./controllers/course/validators')
+
+
 const app = express()
 
 async function start() {
   await createConnection()
-  const postStudentBodySchema = Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string().email().required(),
-  })
-
+ 
   app.use(bodyParser.json())
 
-  app.get('/students', (request, response) => {
-    const data = studentModel.getStudents()
-    response.json(data);
-  })
+  app.route('/students')
+  .get(studentController.getStudents)
+  .post(validator.body(postStudentBodySchema), studentController.createStudent)
+app.route('/students/:id')
+  .get(studentController.getOne)
+  .put(validator.body(putStudentBodySchema), studentController.updateOne)
+  .delete(studentController.deleteOne)
 
-  app.post('/students', validator.body(postStudentBodySchema), async (request, response) => {
-    const result = await studentModel.createStudent(request.body)
-    response.json(result)
-  })
+app.route('/courses')
+  .post(validator.body(postCourseBodySchema), courseController.createCourse)
+  .get(courseController.getCourses)
 
-  app.put('/students/:id', (request, response) => {
-    const result = studentModel.updateStudent(Number(request.params.id), request.body)
-    response.json(result)
-  })
+  app.route('/courses/:id')
+  .get(courseController.getOneCourse)
+    
 
-  app.delete('/students/:id', (request, response) => {
-    const result = studentModel.deleteStudent(Number(request.params.id))
-    response.json(result)
-  })
+app.post('/students/:courseId/course', courseController.linkStudentToCourse);
+
+
+
 
   app.listen(3000, () => console.log('Server running on port 3000'))
 }

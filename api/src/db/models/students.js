@@ -11,8 +11,40 @@ const studentDbModel = {
     const result = await db.connection.execute('SELECT * FROM student WHERE id = ?', [id]);
     return result[0][0]
   },
-}
 
+fetchAll: async function () {
+  const result = await db.connection.execute('SELECT * FROM student');
+  return result[0]
+},
+
+deleteById: async function (id) {
+  const result = await db.connection.execute('DELETE FROM student WHERE id = ?', [id]);
+  return result[0]
+},
+
+updateOne: async function (id, params) {
+  let query = 'UPDATE student SET ';
+  const arguments = [];
+  const parameters = [];
+
+  if (params.name) {
+    arguments.push('name = ?')
+    parameters.push(params.name)
+  }
+  if (params.email) {
+    arguments.push('email = ?')
+    parameters.push(params.email)
+  }
+
+  query += arguments.join(',')
+
+  query += ' WHERE id = ?';
+  parameters.push(id)
+
+  const result = await db.connection.execute(query, parameters);
+  return result[0]
+},
+}
 module.exports = {
   studentDbModel
 }
