@@ -10,8 +10,10 @@
   "author": "Tatenda Chawanzwa",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.379.1",
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
     "express-joi-validation": "^5.0.1",
     "joi": "^17.9.2",
     "mysql2": "^3.5.0",

@@ -6,7 +6,13 @@ const courseController = {
     const course = await courseDbModel.fetchById(id);
 
     response.json({ course });
-  }
+  },
+
+  getCourses: async (request, response) => {
+    const courses = await courseDbModel.fetchAll()
+
+    response.json({ courses })
+  },
 }
 
 module.exports = {

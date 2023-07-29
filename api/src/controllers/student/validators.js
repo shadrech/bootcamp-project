@@ -8,8 +8,13 @@ const putStudentBodySchema = Joi.object({
   name: Joi.string(),
   email: Joi.string().email()
 })
+const createStudentEnrollmentBodySchema = Joi.object({
+  startDate: Joi.date().required(),
+  endDate: Joi.date().required()
+})
 
 module.exports = {
   postStudentBodySchema,
-  putStudentBodySchema
+  putStudentBodySchema,
+  createStudentEnrollmentBodySchema
 }

@@ -31,6 +31,11 @@ const courseDbModel = {
     const result = await db.connection.execute('SELECT * FROM course WHERE id = ?', [id]);
     return result[0][0]
   },
+
+  fetchAll: async function () {
+    const result = await db.connection.execute('SELECT * FROM course');
+    return result[0]
+  },
 }
 
 module.exports = {

@@ -1,3 +1,4 @@
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const { studentDbModel } = require('../../db/models/students');
 
 const studentController = {
@@ -8,7 +9,7 @@ const studentController = {
   },
 
   createStudent: async (request, response) => {
-    const insertId = await studentDbModel.create(params)
+    const insertId = await studentDbModel.create(request.body)
     const student = await studentDbModel.fetchById(insertId)
 
     response.json({ student })
@@ -31,7 +32,38 @@ const studentController = {
   deleteOne: async (request, response) => {
     const result = await studentDbModel.deleteById(Number(request.params.id))
     response.json({ deletedRows: result.affectedRows })
-  }
+  },
+
+  createEnrollment: async (request, response) => {
+    const studentId = Number(request.params.studentId)
+    const courseId = request.params.courseId
+    const { startDate, endDate } = request.body
+
+    const result = await studentDbModel.createEnrollment(studentId, courseId, startDate, endDate)
+
+    response.json({ result })
+  },
+
+  uploadProfilePicture: async (request, response) => {
+    const client = new S3Client({
+      region: 'eu-west-1',
+      credentials: {
+        accessKeyId: '<ACCESS_KEY_HERE>',
+        secretAccessKey: '<SECRET_ACCESS_HERE>'
+      }
+    });
+    // const id = Number(request.params.id);
+
+    const command = new PutObjectCommand({
+      Bucket: 'codemonya',
+      Key: request.files.profile.name,
+      Body: request.files.profile.data
+    })
+
+    await client.send(command);
+
+    response.json({ success: true })
+  },
 }
 
 module.exports = {

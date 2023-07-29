@@ -8,8 +8,32 @@ const studentDbModel = {
   },
 
   fetchById: async function (id) {
-    const result = await db.connection.execute('SELECT * FROM student WHERE id = ?', [id]);
-    return result[0][0]
+    const result = await db.connection.execute(`
+      SELECT s.id AS s_id, 
+      FROM student AS s
+      LEFT JOIN enrollment AS e
+      ON s.id = e.studentId
+      WHERE s.id = ?
+    `, [id]);
+
+    const student = {
+      id: result[0][0].id,
+      name: result[0][0].name,
+      email: result[0][0].email,
+      createdAt: result[0][0].createdAt,
+      enrollments: result[0].map(row => {
+        return {
+          studentId: row.studentId,
+          courseId: row.courseId,
+          grade: row.grade,
+          score: row.score,
+          startDate: row.startDate,
+          endDate: row.endDate,
+        }
+      })
+    }
+
+    return student
   },
 
   fetchAll: async function () {
@@ -43,6 +67,12 @@ const studentDbModel = {
 
     const result = await db.connection.execute(query, parameters);
     return result[0]
+  },
+
+  createEnrollment: async function (studentId, courseId, startDate, endDate) {
+    const result = await db.connection.execute('INSERT INTO enrollment(studentId, courseId, startDate, endDate) VALUES(?, ?, ?, ?)', [studentId, courseId, startDate, endDate]);
+
+    return result[0].insertId
   },
 }
 
