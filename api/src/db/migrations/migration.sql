@@ -8,7 +8,7 @@ CREATE TABLE student (
 );
 
 CREATE TABLE course (
-  id VARCHAR(36) NOT NULL PRIMARY KEY,
+  id VARCHAR(255) NOT NULL PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   description TEXT NULL,
   imageUrl VARCHAR(255) NULL,
