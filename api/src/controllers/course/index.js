@@ -1,4 +1,4 @@
-const { courseDbModel } = require('../../db/models/courses');
+import courseDbModel from '../../db/models/courses'
 
 const courseController = {
   async createCourse(request, response) {
@@ -15,6 +15,4 @@ const courseController = {
   },
 }
 
-module.exports = {
-  courseController
-}
+export default courseController

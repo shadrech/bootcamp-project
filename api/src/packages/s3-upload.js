@@ -1,23 +1,35 @@
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3"
 
-const S3Upload = {
-  async uploadToS3(bucketName, objectKey, body) {
-    const client = new S3Client({
+class S3Upload {
+  constructor(bucketName) {
+    this.bucketName = bucketName
+    this.client = new S3Client({
       region: 'eu-west-1',
       credentials: {
-        accessKeyId: 'AKIAR2OD2TZO7HRAD6UY',
-        secretAccessKey: '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'
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_ACCESS_KEY_SECRET
       }
     });
+  }
 
+  async uploadToS3(objectKey, body) {
     const command = new PutObjectCommand({
-      Bucket: bucketName,
+      Bucket: this.bucketName,
       Key: objectKey,
       Body: body
     })
 
-    await client.send(command);
+    await this.client.send(command);
+  }
+
+  async deleteObject(objectKey) {
+    const command = new DeleteObjectCommand({
+      Bucket: this.bucketName,
+      Key: objectKey
+    })
+
+    await this.client.send(command)
   }
 }
 
-module.exports = S3Upload
+export default S3Upload

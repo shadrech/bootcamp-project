@@ -1,9 +1,9 @@
-const { v4: uuidv4 } = require('uuid');
-const db = require('../connection')
+import { v4 } from 'uuid'
+import db from '../connection'
 
 const courseDbModel = {
   create: async function (fields) {
-    const id = uuidv4();
+    const id = v4();
     const queryAdditions = ['id', 'title'];
     const parameters = [id, fields.title];
 
@@ -38,6 +38,4 @@ const courseDbModel = {
   },
 }
 
-module.exports = {
-  courseDbModel
-}
+export default courseDbModel

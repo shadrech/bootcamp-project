@@ -1,6 +1,6 @@
-const { v4: uuidv4 } = require('uuid');
-const { studentDbModel } = require('../../db/models/students');
-const s3Upload = require('../../packages/s3-upload')
+import { v4 as uuidv4 } from 'uuid'
+import studentDbModel from '../../db/models/students'
+import S3Upload from '../../packages/s3-upload'
 
 const studentController = {
   getStudents: async (request, response) => {
@@ -10,13 +10,14 @@ const studentController = {
   },
 
   createStudent: async (request, response) => {
-    if (!request.files.profilePicture) {
-      response.status(400).send('Profile picture is required')
+    const s3Upload = new S3Upload(process.env.S3_BUCKET_NAME)
+    if (!request?.files?.profilePicture) {
+      return response.status(400).send('Profile picture is required')
     }
 
     const pictureName = `${uuidv4()}${request.files.profilePicture.name}`
     const insertId = await studentDbModel.create(request.body, pictureName)
-    await s3Upload.uploadToS3('codemonya', pictureName, request.files.profilePicture.data)
+    await s3Upload.uploadToS3(pictureName, request.files.profilePicture.data)
 
     const student = await studentDbModel.fetchById(insertId)
 
@@ -38,7 +39,19 @@ const studentController = {
   },
 
   deleteOne: async (request, response) => {
-    const result = await studentDbModel.deleteById(Number(request.params.id))
+    const s3Upload = new S3Upload(process.env.S3_BUCKET_NAME)
+    const id = Number(request.params.id)
+
+    let student
+    try {
+      student = await studentDbModel.fetchById(id)
+    } catch (error) {
+      return response.status(404).json({ message: error.message })
+    }
+
+    const result = await studentDbModel.deleteById(id)
+    await s3Upload.deleteObject(student.pictureName)
+
     response.json({ deletedRows: result.affectedRows })
   },
 
@@ -57,12 +70,13 @@ const studentController = {
       if (error.message == 'Cannot add or update a child row: a foreign key constraint fails (`admin`.`enrollment`, CONSTRAINT `FK_enrollment_studentId` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`) ON DELETE CASCADE)') {
         return response.status(404).json({ error: 'Student not found' });
       }
+
+      console.log(error);
+      return response.status(500).json({ message: 'Something went wrong' });
     }
 
     response.json({ success: true })
   },
 }
 
-module.exports = {
-  studentController
-}
+export default studentController

@@ -1,1 +1,1 @@
-ALTER TABLE student ADD pictureName VARCHAR(255);
+ALTER TABLE student ADD pictureName TEXT;

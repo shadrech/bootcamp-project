@@ -1,17 +1,21 @@
-const express = require('express')
-const validator = require('express-joi-validation').createValidator({})
-const bodyParser = require('body-parser')
-const fileUpload = require('express-fileupload')
-const { createConnection } = require('./db/connection')
+import dotenv from 'dotenv'
+dotenv.config()
+import express from 'express'
+import expressJoiValidation from 'express-joi-validation'
+import bodyParser from 'body-parser'
+import fileUpload from 'express-fileupload'
+import database from './db/connection'
 
-const { studentController } = require('./controllers/student')
-const { postStudentBodySchema, putStudentBodySchema, createStudentEnrollmentBodySchema } = require('./controllers/student/validators')
-const { courseController } = require('./controllers/course')
-const { postCourseBodySchema } = require('./controllers/course/validators')
+import studentController from './controllers/student'
+import { postStudentBodySchema, putStudentBodySchema, createStudentEnrollmentBodySchema } from './controllers/student/validators'
+import courseController from './controllers/course'
+import { postCourseBodySchema } from './controllers/course/validators'
+
 const app = express()
+const validator = expressJoiValidation.createValidator({})
 
 async function start() {
-  await createConnection()
+  await database.createConnection()
   app.use(bodyParser.json())
   app.use(fileUpload())
 

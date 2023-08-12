@@ -1,11 +1,7 @@
-const Joi = require('joi')
+import Joi from 'joi'
 
-const postCourseBodySchema = Joi.object({
+export const postCourseBodySchema = Joi.object({
   title: Joi.string().required(),
   description: Joi.string(),
   imageUrl: Joi.string(),
 })
-
-module.exports = {
-  postCourseBodySchema,
-}

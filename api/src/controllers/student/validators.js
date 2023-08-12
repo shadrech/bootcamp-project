@@ -1,21 +1,17 @@
-const Joi = require('joi')
+import Joi from 'joi'
 
-const postStudentBodySchema = Joi.object({
+export const postStudentBodySchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
 })
-const putStudentBodySchema = Joi.object({
+
+export const putStudentBodySchema = Joi.object({
   name: Joi.string(),
   email: Joi.string().email()
 })
-const createStudentEnrollmentBodySchema = Joi.object({
+
+export const createStudentEnrollmentBodySchema = Joi.object({
   courseId: Joi.string().uuid().required(),
   startDate: Joi.date().required(),
   endDate: Joi.date().required()
 })
-
-module.exports = {
-  postStudentBodySchema,
-  putStudentBodySchema,
-  createStudentEnrollmentBodySchema
-}
