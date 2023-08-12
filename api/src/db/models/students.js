@@ -1,15 +1,15 @@
 const db = require('../connection')
 
 const studentDbModel = {
-  create: async function (fields) {
-    const result = await db.connection.execute('INSERT INTO student(name, email) VALUES(?, ?)', [fields.name, fields.email]);
+  create: async function (fields, pictureName) {
+    const result = await db.connection.execute('INSERT INTO student(name, email, pictureName) VALUES(?, ?, ?)', [fields.name, fields.email, pictureName]);
 
     return result[0].insertId
   },
 
   fetchById: async function (id) {
     const result = await db.connection.execute(`
-      SELECT s.id AS s_id, 
+      SELECT *
       FROM student AS s
       LEFT JOIN enrollment AS e
       ON s.id = e.studentId
@@ -21,16 +21,18 @@ const studentDbModel = {
       name: result[0][0].name,
       email: result[0][0].email,
       createdAt: result[0][0].createdAt,
-      enrollments: result[0].map(row => {
-        return {
-          studentId: row.studentId,
-          courseId: row.courseId,
-          grade: row.grade,
-          score: row.score,
-          startDate: row.startDate,
-          endDate: row.endDate,
-        }
-      })
+      enrollments: result[0]
+        .filter((row) => row.studentId != null)
+        .map(row => {
+          return {
+            studentId: row.studentId,
+            courseId: row.courseId,
+            grade: row.grade,
+            score: row.score,
+            startDate: row.startDate,
+            endDate: row.endDate,
+          }
+        })
     }
 
     return student

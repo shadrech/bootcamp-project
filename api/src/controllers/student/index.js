@@ -1,5 +1,6 @@
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { v4: uuidv4 } = require('uuid');
 const { studentDbModel } = require('../../db/models/students');
+const s3Upload = require('../../packages/s3-upload')
 
 const studentController = {
   getStudents: async (request, response) => {
@@ -9,7 +10,14 @@ const studentController = {
   },
 
   createStudent: async (request, response) => {
-    const insertId = await studentDbModel.create(request.body)
+    if (!request.files.profilePicture) {
+      response.status(400).send('Profile picture is required')
+    }
+
+    const pictureName = `${uuidv4()}${request.files.profilePicture.name}`
+    const insertId = await studentDbModel.create(request.body, pictureName)
+    await s3Upload.uploadToS3('codemonya', pictureName, request.files.profilePicture.data)
+
     const student = await studentDbModel.fetchById(insertId)
 
     response.json({ student })
@@ -36,31 +44,20 @@ const studentController = {
 
   createEnrollment: async (request, response) => {
     const studentId = Number(request.params.studentId)
-    const courseId = request.params.courseId
-    const { startDate, endDate } = request.body
+    const { startDate, endDate, courseId } = request.body
 
-    const result = await studentDbModel.createEnrollment(studentId, courseId, startDate, endDate)
-
-    response.json({ result })
-  },
-
-  uploadProfilePicture: async (request, response) => {
-    const client = new S3Client({
-      region: 'eu-west-1',
-      credentials: {
-        accessKeyId: '<ACCESS_KEY_HERE>',
-        secretAccessKey: '<SECRET_ACCESS_HERE>'
+    try {
+      await studentDbModel.createEnrollment(studentId, courseId, startDate, endDate)
+    } catch (error) {
+      // way to catch errors when studentId/courseId deosnt match any record in database
+      if (error.message == 'Cannot add or update a child row: a foreign key constraint fails (`admin`.`enrollment`, CONSTRAINT `FK_enrollment_courseId` FOREIGN KEY (`courseId`) REFERENCES `course` (`id`) ON DELETE CASCADE)') {
+        return response.status(404).json({ error: 'Course not found' });
       }
-    });
-    // const id = Number(request.params.id);
 
-    const command = new PutObjectCommand({
-      Bucket: 'codemonya',
-      Key: request.files.profile.name,
-      Body: request.files.profile.data
-    })
-
-    await client.send(command);
+      if (error.message == 'Cannot add or update a child row: a foreign key constraint fails (`admin`.`enrollment`, CONSTRAINT `FK_enrollment_studentId` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`) ON DELETE CASCADE)') {
+        return response.status(404).json({ error: 'Student not found' });
+      }
+    }
 
     response.json({ success: true })
   },

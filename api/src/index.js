@@ -22,14 +22,12 @@ async function start() {
     .get(studentController.getOne)
     .put(validator.body(putStudentBodySchema), studentController.updateOne)
     .delete(studentController.deleteOne)
-  app.route('/students/:id/picture')
-    .post(studentController.uploadProfilePicture)
 
   app.route('/courses')
     .get(courseController.getCourses)
     .post(validator.body(postCourseBodySchema), courseController.createCourse)
   
-  app.route('/student/:studentId/course/:courseId')
+  app.route('/students/:studentId/course')
     .post(validator.body(createStudentEnrollmentBodySchema), studentController.createEnrollment)
 
   app.listen(3000, () => console.log('Server running on port 3000'))

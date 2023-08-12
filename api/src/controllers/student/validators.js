@@ -9,6 +9,7 @@ const putStudentBodySchema = Joi.object({
   email: Joi.string().email()
 })
 const createStudentEnrollmentBodySchema = Joi.object({
+  courseId: Joi.string().uuid().required(),
   startDate: Joi.date().required(),
   endDate: Joi.date().required()
 })
