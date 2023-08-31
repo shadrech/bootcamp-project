@@ -1,5 +1,7 @@
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const S3Upload = require('../../packages/s3-upload');
 const { studentDbModel } = require('../../db/models/students');
+const short = require('short-uuid');
+
 
 const studentController = {
     getStudents: async (request, response) => {
@@ -9,9 +11,16 @@ const studentController = {
     },
 
     createStudent: async (request, response) => {
-        const insertId = await studentDbModel.create(request.body)
-        const student = await studentDbModel.fetchById(insertId)
+        const s3Upload = new S3Upload(process.env.S3_BUCKET_NAME)
+        if (!request?.files?.profilePicture) {
+          return response.status(400).send('Profile picture is required!')
+        }
 
+        //const pictureName = `${short()}${request.files.profilePicture.name}`
+        const insertId = await studentDbModel.create(request.body, profilePicture)
+        await s3Upload.uploadToS3(pictureName, request.files.profilePicture.data)
+
+        const student = await studentDbModel.fetchById(insertId)
 
         response.json({ student })
     },
@@ -35,26 +44,6 @@ const studentController = {
 
         response.json({ deletedRows: result.affectedRows })
     },
-
-    uploadProfilePicture: async (request, response) => {
-        const client = new S3Client({
-          region: 'eu-west-2',
-          credentials: {
-            accessKeyId: '',
-            secretAccessKey: ''
-          }
-        });
-    
-        const command = new PutObjectCommand({
-          Bucket: 'codemonya-eliel',
-          Key: request.files.profile.name,
-          Body: request.files.profile.data
-        })
-    
-        await client.send(command);
-    
-        response.json({ success: true })
-      },
 }
 
 module.exports = {

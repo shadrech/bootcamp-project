@@ -27,9 +27,6 @@ async function start() {
     .get(studentController.getOne)
     .put(validator.body(putStudentBodySchema), studentController.updateOne)
     .delete(studentController.deleteOne)
-  
-  app.route('/student/:id/picture')
-    .post(studentController.uploadProfilePicture)
 
   app.route('/courses')
     .get(courseController.getCourses)

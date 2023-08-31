@@ -3,7 +3,7 @@ const { database }  = require("../connections");
 
 const studentDbModel = {
     create: async function (fields) {
-        const result = await database.connection.execute('INSERT INTO student(name, email) VALUES(?, ?)', [fields.name, fields.email]);
+        const result = await database.connection.execute('INSERT INTO student(name, email, pictureName) VALUES(?, ?, ?)', [fields.name, fields.email, pictureName]);
 
         return result[0].insertId
     },
@@ -11,12 +11,19 @@ const studentDbModel = {
     fetchById: async (id) => {
         const result = await database.connection.execute(`SELECT * FROM student AS s INNER JOIN enrollment AS e ON s.id = e.studentId WHERE s.id = ?`, [id]);
 
+        if (result[0].length == 0) {
+            throw new Error(`Student with id "${id}" not found`);
+        }
+
         const student = {
             id: result[0][0].id,
             name: result[0][0].name,
             email: result[0][0].email,
+            pictureName: result[0][0].pictureName,
             createdAt: result[0][0].createdAt,
-            enrollemts: result[0].map(row => {
+            enrollemts: result[0]
+            .filter((row) => row.studentId != null)
+            .map(row => {
                 return {
                     studentId: row.studentId,
                     courseId: row.courseId,
@@ -66,12 +73,6 @@ const studentDbModel = {
         const result = await database.connection.execute(query, parameters);
         return result[0]
     },
-
-    /*
-    uploadProfilePicture: aysnc (request, response) => {
-        const profileImageData = request.files.profile
-    }
-    */
 };
 
 module.exports = { studentDbModel }
